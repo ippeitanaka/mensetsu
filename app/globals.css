@@ -1,0 +1,217 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 248, 250, 252;
+  --background-end-rgb: 241, 245, 249;
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(to bottom, transparent, rgb(var(--background-end-rgb))) rgb(var(--background-start-rgb));
+  min-height: 100vh;
+}
+
+/* 背景スタイルを無地に変更 */
+.ghibli-bg {
+  background-color: #f8fafc;
+  position: relative;
+}
+
+.ghibli-card {
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e2e8f0;
+}
+
+.ghibli-title {
+  font-family: "Hiragino Maru Gothic Pro", "Meiryo", sans-serif;
+  color: #c53030;
+}
+
+.ghibli-button {
+  background-color: #e53e3e;
+  color: white;
+  border-radius: 9999px;
+  padding: 0.5rem 1.5rem;
+  font-weight: 600;
+  transition: all 0.2s;
+  box-shadow: 0 2px 4px rgba(229, 62, 62, 0.5);
+}
+
+.ghibli-button:hover {
+  background-color: #c53030;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px rgba(229, 62, 62, 0.5);
+}
+
+.ghibli-button:disabled {
+  background-color: #a0aec0;
+  cursor: not-allowed;
+}
+
+.ghibli-input {
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  transition: all 0.2s;
+}
+
+.ghibli-input:focus {
+  border-color: #4299e1;
+  box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.3);
+  outline: none;
+}
+
+.ghibli-calendar .react-calendar {
+  width: 100%;
+  max-width: 100%;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  font-family: "Hiragino Maru Gothic Pro", "Meiryo", sans-serif;
+  line-height: 1.125em;
+}
+
+.ghibli-calendar .react-calendar__tile {
+  padding: 0.75em 0.5em;
+  background: none;
+  text-align: center;
+  line-height: 16px;
+  font-size: 0.9em;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+.ghibli-calendar .react-calendar__tile:hover {
+  background-color: #ebf8ff;
+}
+
+.ghibli-calendar .react-calendar__tile--active {
+  background: #4299e1;
+  color: white;
+}
+
+.ghibli-calendar .react-calendar__tile--hasActive {
+  background: #4299e1;
+  color: white;
+}
+
+.ghibli-calendar .react-calendar__navigation {
+  display: flex;
+  height: 44px;
+  margin-bottom: 1em;
+}
+
+.ghibli-calendar .react-calendar__navigation button {
+  min-width: 44px;
+  background: none;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+.ghibli-calendar .react-calendar__navigation button:hover {
+  background-color: #ebf8ff;
+}
+
+.ghibli-calendar .react-calendar__month-view__weekdays {
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 0.8em;
+  color: #4a5568;
+}
+
+.ghibli-calendar .react-calendar__month-view__days__day--weekend {
+  color: #e53e3e;
+}
+
+.ghibli-calendar .react-calendar__month-view__days__day--neighboringMonth {
+  color: #a0aec0;
+}
+
+.ghibli-calendar .react-calendar__year-view .react-calendar__tile,
+.ghibli-calendar .react-calendar__decade-view .react-calendar__tile,
+.ghibli-calendar .react-calendar__century-view .react-calendar__tile {
+  padding: 1em 0.5em;
+}
+
+.ghibli-calendar .react-calendar__tile--now {
+  background: #ebf8ff;
+  border-radius: 8px;
+}
+
+.ghibli-calendar .react-calendar__tile--now:hover {
+  background: #bee3f8;
+}
+
+.ghibli-calendar .react-calendar__tile--hasActive:hover {
+  background: #3182ce;
+}
+
+.ghibli-calendar .react-calendar__tile--active:hover {
+  background: #3182ce;
+}
+
+.available-day {
+  background-color: #c6f6d5 !important;
+  position: relative;
+}
+
+.available-day::after {
+  content: "○";
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  font-size: 10px;
+  color: #38a169;
+}
+
+.full-day {
+  background-color: #fed7d7 !important;
+  position: relative;
+}
+
+.full-day::after {
+  content: "×";
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  font-size: 10px;
+  color: #e53e3e;
+}
+
+/* アニメーション用のスタイル */
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-15px);
+  }
+}
+
+.animate-bounce {
+  animation: bounce 2s ease-in-out infinite;
+}
