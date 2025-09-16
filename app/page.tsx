@@ -53,7 +53,7 @@ export default function Home() {
       <main className="flex-grow flex flex-col items-center justify-center p-4 sm:p-8">
         <div className="max-w-4xl w-full ghibli-card p-6 sm:p-10">
           <div className="text-center mb-8">
-            <h1 className="ghibli-title text-3xl sm:text-4xl font-bold mb-4">就職面接練習スケジューラー</h1>
+            <h1 className="ghibli-title text-3xl sm:text-4xl font-bold mb-4">面接練習依頼</h1>
             <p className="text-gray-600 text-lg">学生が面接練習を教員に依頼するためのスケジュール管理アプリです</p>
           </div>
 
