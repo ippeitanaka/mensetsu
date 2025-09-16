@@ -8,7 +8,7 @@ import Script from "next/script"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "就職面接練習スケジューラー",
+  title: "面接練習依頼",
   description: "学生が面接練習を教員に依頼するためのスケジュール管理アプリ",
     generator: 'v0.dev'
 }

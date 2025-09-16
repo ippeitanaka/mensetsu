@@ -35,7 +35,7 @@ export function Navigation({ isAuthenticated = false }: NavigationProps) {
                     className="scale-125"
                   />
                 </div>
-                <span className="ghibli-title text-xl font-bold">就職面接練習スケジューラー</span>
+                <span className="ghibli-title text-xl font-bold">面接練習依頼</span>
               </Link>
             </div>
             <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
