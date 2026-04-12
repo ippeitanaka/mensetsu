@@ -1,8 +1,9 @@
-import { supabase } from "./supabase"
+import { getSupabaseClient } from "./supabase"
 import type { Teacher, AvailableSlot, TimeSlot } from "@/types/models"
 
 // 教員関連の関数
 export async function getTeachers(): Promise<Teacher[]> {
+  const supabase = getSupabaseClient()
   const { data, error } = await supabase.from("teachers").select("*").order("name")
 
   if (error) {
@@ -14,6 +15,7 @@ export async function getTeachers(): Promise<Teacher[]> {
 }
 
 export async function addTeacher(name: string, email: string): Promise<Teacher | null> {
+  const supabase = getSupabaseClient()
   const { data, error } = await supabase.from("teachers").insert([{ name, email }]).select().single()
 
   if (error) {
@@ -25,6 +27,7 @@ export async function addTeacher(name: string, email: string): Promise<Teacher |
 }
 
 export async function deleteTeacher(id: string): Promise<boolean> {
+  const supabase = getSupabaseClient()
   const { error } = await supabase.from("teachers").delete().eq("id", id)
 
   if (error) {
@@ -37,6 +40,7 @@ export async function deleteTeacher(id: string): Promise<boolean> {
 
 // 利用可能な日程関連の関数
 export async function getAvailableSlots(teacherId?: string): Promise<AvailableSlot[]> {
+  const supabase = getSupabaseClient()
   let query = supabase.from("available_slots").select("*, teacher:teachers(name)")
 
   if (teacherId) {
@@ -58,6 +62,7 @@ export async function addAvailableSlot(
   date: string,
   timeSlots: TimeSlot[],
 ): Promise<AvailableSlot[]> {
+  const supabase = getSupabaseClient()
   const slots = timeSlots.map((slot) => ({
     teacher_id: teacherId,
     date,
@@ -76,6 +81,7 @@ export async function addAvailableSlot(
 }
 
 export async function updateSlotFullStatus(id: string, isFull: boolean): Promise<boolean> {
+  const supabase = getSupabaseClient()
   const { error } = await supabase.from("available_slots").update({ is_full: isFull }).eq("id", id)
 
   if (error) {
@@ -87,6 +93,7 @@ export async function updateSlotFullStatus(id: string, isFull: boolean): Promise
 }
 
 export async function deleteAvailableSlot(id: string): Promise<boolean> {
+  const supabase = getSupabaseClient()
   const { error } = await supabase.from("available_slots").delete().eq("id", id)
 
   if (error) {

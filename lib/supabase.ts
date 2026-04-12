@@ -1,14 +1,29 @@
 import { createClient } from "@supabase/supabase-js"
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || ""
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ""
+type BrowserSupabaseClient = ReturnType<typeof createClient>
 
-// ブラウザ環境かどうかをチェック
-const isBrowser = typeof window !== "undefined"
+let browserSupabaseClient: BrowserSupabaseClient | null = null
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
-  auth: {
-    persistSession: isBrowser, // ブラウザ環境でのみセッションを保持
-    autoRefreshToken: isBrowser, // ブラウザ環境でのみトークンを自動更新
-  },
-})
+export function getSupabaseClient(): BrowserSupabaseClient {
+  if (browserSupabaseClient) {
+    return browserSupabaseClient
+  }
+
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+
+  if (!supabaseUrl || !supabaseAnonKey) {
+    throw new Error("Supabase public environment variables are required")
+  }
+
+  const isBrowser = typeof window !== "undefined"
+
+  browserSupabaseClient = createClient(supabaseUrl, supabaseAnonKey, {
+    auth: {
+      persistSession: isBrowser,
+      autoRefreshToken: isBrowser,
+    },
+  })
+
+  return browserSupabaseClient
+}

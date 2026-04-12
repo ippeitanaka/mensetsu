@@ -1,8 +1,9 @@
-import { supabase } from "./supabase"
+import { getSupabaseClient } from "./supabase"
 import type { LoginCredentials } from "@/types/auth"
 
 export async function signIn({ email, password }: LoginCredentials) {
   try {
+    const supabase = getSupabaseClient()
     // まず、メールアドレスとパスワードでサインインを試みる
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
@@ -51,6 +52,7 @@ export async function signIn({ email, password }: LoginCredentials) {
 
 export async function signOut() {
   try {
+    const supabase = getSupabaseClient()
     // Supabaseのセッションをクリア
     const { error } = await supabase.auth.signOut()
 
@@ -70,6 +72,7 @@ export async function signOut() {
 
 export async function getCurrentUser() {
   try {
+    const supabase = getSupabaseClient()
     // まず、Supabaseの認証を確認
     const { data, error } = await supabase.auth.getUser()
 
