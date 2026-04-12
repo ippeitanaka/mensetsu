@@ -7,6 +7,9 @@ import { useRouter } from "next/navigation"
 import { signIn } from "@/lib/auth"
 import { Navigation } from "@/components/navigation"
 import Image from "next/image"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent } from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
 
 export default function Login() {
   const [email, setEmail] = useState("")
@@ -36,11 +39,12 @@ export default function Login() {
   }
 
   return (
-    <div className="ghibli-bg min-h-screen flex flex-col">
+    <div className="ghibli-bg app-shell">
       <Navigation />
       <main className="flex-grow flex items-center justify-center p-4">
-        <div className="max-w-md w-full ghibli-card p-8">
-          <div className="text-center mb-6">
+        <Card className="ghibli-card max-w-md w-full">
+          <CardContent className="p-8">
+            <div className="mb-6 text-center">
             <div className="flex justify-center mb-4">
               <div className="relative w-16 h-16 mx-auto overflow-hidden">
                 <Image
@@ -53,52 +57,51 @@ export default function Login() {
               </div>
             </div>
             <h1 className="ghibli-title text-2xl font-bold">教員ログイン</h1>
-          </div>
-
-          {error && (
-            <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded mb-4 whitespace-pre-line">
-              {error}
-            </div>
-          )}
-
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-                メールアドレス
-              </label>
-              <input
-                id="email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                className="ghibli-input w-full"
-              />
             </div>
 
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
-                パスワード
-              </label>
-              <input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                className="ghibli-input w-full"
-              />
-            </div>
+            {error && (
+              <div className="mb-4 whitespace-pre-line rounded-md border border-red-200 bg-red-50 px-4 py-3 text-red-700">
+                {error}
+              </div>
+            )}
 
-            <button type="submit" disabled={isLoading} className="ghibli-button w-full">
-              {isLoading ? "ログイン中..." : "ログイン"}
-            </button>
-          </form>
-        </div>
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div>
+                <label htmlFor="email" className="app-label">
+                  メールアドレス
+                </label>
+                <Input
+                  id="email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+              </div>
+
+              <div>
+                <label htmlFor="password" className="app-label">
+                  パスワード
+                </label>
+                <Input
+                  id="password"
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+              </div>
+
+              <Button type="submit" disabled={isLoading} className="w-full">
+                {isLoading ? "ログイン中..." : "ログイン"}
+              </Button>
+            </form>
+          </CardContent>
+        </Card>
       </main>
-      <footer className="bg-blue-50 border-t border-blue-100 py-4">
+      <footer className="app-footer py-4">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <p className="text-center text-gray-500 text-sm">Copyright © {new Date().getFullYear()} TMC DX Committee</p>
+          <p className="text-center text-sm text-neutral-500">Copyright © {new Date().getFullYear()} TMC DX Committee</p>
         </div>
       </footer>
     </div>

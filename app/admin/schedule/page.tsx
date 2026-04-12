@@ -15,6 +15,9 @@ import { ja } from "date-fns/locale"
 import Image from "next/image"
 // 以下のインポートを追加
 import { addAvailableSlotsAction, updateSlotFullStatusAction, deleteAvailableSlotAction } from "./actions"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent } from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
 
 type ValuePiece = Date | null
 type Value = ValuePiece | [ValuePiece, ValuePiece]
@@ -196,7 +199,7 @@ export default function AdminSchedule() {
   }
 
   return (
-    <div className="ghibli-bg min-h-screen flex flex-col">
+    <div className="ghibli-bg app-shell">
       <Navigation isAuthenticated={true} />
       <main className="flex-grow p-4 sm:p-8">
         <div className="max-w-6xl mx-auto">
@@ -213,168 +216,163 @@ export default function AdminSchedule() {
             </div>
           </div>
 
-          <div className="ghibli-card p-6 mb-8">
-            <div className="mb-6">
-              <label htmlFor="teacher" className="block text-sm font-medium text-gray-700 mb-1">
-                教員を選択
-              </label>
-              <select
-                id="teacher"
-                value={selectedTeacher}
-                onChange={handleTeacherChange}
-                className="ghibli-input w-full sm:w-auto"
-                disabled={loading || teachers.length === 0}
-              >
-                {teachers.length === 0 ? (
-                  <option value="">教員が登録されていません</option>
-                ) : (
-                  teachers.map((teacher) => (
-                    <option key={teacher.id} value={teacher.id}>
-                      {teacher.name}
-                    </option>
-                  ))
-                )}
-              </select>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div>
-                <h2 className="ghibli-title text-xl font-semibold mb-4">年間カレンダー</h2>
-                <div className="ghibli-calendar">
-                  <Calendar onChange={setDate} value={date} locale="ja-JP" tileClassName={tileClassName} />
-                </div>
-                <div className="mt-4 flex flex-col sm:flex-row gap-4">
-                  <div className="flex items-center">
-                    <div className="w-4 h-4 bg-green-200 mr-2"></div>
-                    <span className="text-sm">予約可能</span>
-                  </div>
-                  <div className="flex items-center">
-                    <div className="w-4 h-4 bg-red-200 mr-2"></div>
-                    <span className="text-sm">満員</span>
-                  </div>
-                </div>
+          <Card className="ghibli-card mb-8">
+            <CardContent className="p-6">
+              <div className="mb-6">
+                <label htmlFor="teacher" className="app-label">
+                  教員を選択
+                </label>
+                <select
+                  id="teacher"
+                  value={selectedTeacher}
+                  onChange={handleTeacherChange}
+                  className="ghibli-input w-full sm:w-auto"
+                  disabled={loading || teachers.length === 0}
+                >
+                  {teachers.length === 0 ? (
+                    <option value="">教員が登録されていません</option>
+                  ) : (
+                    teachers.map((teacher) => (
+                      <option key={teacher.id} value={teacher.id}>
+                        {teacher.name}
+                      </option>
+                    ))
+                  )}
+                </select>
               </div>
 
-              <div>
-                <h2 className="ghibli-title text-xl font-semibold mb-4">
-                  {date instanceof Date
-                    ? `${format(date, "yyyy年M月d日", { locale: ja })}の予約枠`
-                    : "日付を選択してください"}
-                </h2>
-
-                {date instanceof Date && (
-                  <div className="space-y-6">
-                    {selectedDateSlots.length > 0 && (
-                      <div className="space-y-4 mb-6">
-                        <h3 className="text-lg font-medium">登録済みの予約枠</h3>
-                        {selectedDateSlots.map((slot) => (
-                          <div
-                            key={slot.id}
-                            className={`p-4 rounded-lg border ${
-                              slot.is_full ? "bg-red-50 border-red-200" : "bg-green-50 border-green-200"
-                            }`}
-                          >
-                            <div className="flex justify-between items-center">
-                              <div>
-                                <p className="font-medium">
-                                  {slot.start_time.substring(0, 5)} - {slot.end_time.substring(0, 5)}
-                                </p>
-                              </div>
-                              <div className="flex gap-2">
-                                <button
-                                  onClick={() => handleToggleFullStatus(slot.id, slot.is_full)}
-                                  className={`px-3 py-1 rounded text-xs font-medium ${
-                                    slot.is_full
-                                      ? "bg-green-100 text-green-800 hover:bg-green-200"
-                                      : "bg-red-100 text-red-800 hover:bg-red-200"
-                                  }`}
-                                >
-                                  {slot.is_full ? "予約可能にする" : "満員にする"}
-                                </button>
-                                <button
-                                  onClick={() => handleDeleteSlot(slot.id)}
-                                  className="px-3 py-1 rounded text-xs font-medium bg-gray-100 text-gray-800 hover:bg-gray-200"
-                                >
-                                  削除
-                                </button>
-                              </div>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-
-                    <div>
-                      <h3 className="text-lg font-medium mb-4">新しい予約枠を追加</h3>
-                      <div className="space-y-4">
-                        {timeSlots.map((slot, index) => (
-                          <div key={index} className="flex flex-wrap gap-4 items-center">
-                            <div>
-                              <label
-                                htmlFor={`start-${index}`}
-                                className="block text-sm font-medium text-gray-700 mb-1"
-                              >
-                                開始時間
-                              </label>
-                              <input
-                                id={`start-${index}`}
-                                type="time"
-                                value={slot.start}
-                                onChange={(e) => handleTimeSlotChange(index, "start", e.target.value)}
-                                className="ghibli-input"
-                              />
-                            </div>
-                            <div>
-                              <label htmlFor={`end-${index}`} className="block text-sm font-medium text-gray-700 mb-1">
-                                終了時間
-                              </label>
-                              <input
-                                id={`end-${index}`}
-                                type="time"
-                                value={slot.end}
-                                onChange={(e) => handleTimeSlotChange(index, "end", e.target.value)}
-                                className="ghibli-input"
-                              />
-                            </div>
-                            <button
-                              type="button"
-                              onClick={() => handleRemoveTimeSlot(index)}
-                              className="mt-6 px-3 py-1 rounded text-xs font-medium bg-red-100 text-red-800 hover:bg-red-200"
-                              disabled={timeSlots.length === 1}
-                            >
-                              削除
-                            </button>
-                          </div>
-                        ))}
-                      </div>
-                      <div className="mt-4 flex flex-wrap gap-4">
-                        <button
-                          type="button"
-                          onClick={handleAddTimeSlot}
-                          className="ghibli-button bg-red-500 hover:bg-red-600"
-                        >
-                          時間枠を追加
-                        </button>
-                        <button
-                          type="button"
-                          onClick={handleSaveTimeSlots}
-                          className="ghibli-button"
-                          disabled={loading}
-                        >
-                          {loading ? "保存中..." : "保存"}
-                        </button>
-                      </div>
+              <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+                <div>
+                  <h2 className="app-panel-title mb-4">年間カレンダー</h2>
+                  <div className="ghibli-calendar">
+                    <Calendar onChange={setDate} value={date} locale="ja-JP" tileClassName={tileClassName} />
+                  </div>
+                  <div className="mt-4 flex flex-col gap-4 sm:flex-row">
+                    <div className="flex items-center gap-2 text-sm text-neutral-700">
+                      <div className="app-status-swatch app-status-swatch--available"></div>
+                      <span>予約可能</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-sm text-neutral-700">
+                      <div className="app-status-swatch app-status-swatch--full"></div>
+                      <span>満員</span>
                     </div>
                   </div>
-                )}
+                </div>
+
+                <div>
+                  <h2 className="app-panel-title mb-4">
+                    {date instanceof Date
+                      ? `${format(date, "yyyy年M月d日", { locale: ja })}の予約枠`
+                      : "日付を選択してください"}
+                  </h2>
+
+                  {date instanceof Date && (
+                    <div className="space-y-6">
+                      {selectedDateSlots.length > 0 && (
+                        <div className="mb-6 space-y-4">
+                          <h3 className="text-lg font-bold tracking-[-0.02em] text-neutral-950">登録済みの予約枠</h3>
+                          {selectedDateSlots.map((slot) => (
+                            <div
+                              key={slot.id}
+                              className={`app-slot-card p-4 ${slot.is_full ? "app-slot-card--full" : ""}`}
+                            >
+                              <div className="flex items-center justify-between gap-3">
+                                <div>
+                                  <p className="font-semibold text-neutral-950">
+                                    {slot.start_time.substring(0, 5)} - {slot.end_time.substring(0, 5)}
+                                  </p>
+                                </div>
+                                <div className="flex flex-wrap gap-2">
+                                  <Button
+                                    onClick={() => handleToggleFullStatus(slot.id, slot.is_full)}
+                                    variant="outline"
+                                    size="sm"
+                                    className={slot.is_full ? "bg-white text-neutral-900 hover:bg-neutral-100" : "border-red-700 bg-red-50 text-red-800 hover:bg-red-100 hover:text-red-900"}
+                                  >
+                                    {slot.is_full ? "予約可能にする" : "満員にする"}
+                                  </Button>
+                                  <Button
+                                    onClick={() => handleDeleteSlot(slot.id)}
+                                    variant="outline"
+                                    size="sm"
+                                    className="bg-white text-neutral-700 hover:bg-neutral-100"
+                                  >
+                                    削除
+                                  </Button>
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+
+                      <div>
+                        <h3 className="mb-4 text-lg font-bold tracking-[-0.02em] text-neutral-950">新しい予約枠を追加</h3>
+                        <div className="space-y-4">
+                          {timeSlots.map((slot, index) => (
+                            <div key={index} className="flex flex-wrap items-center gap-4 rounded-md border border-black/10 bg-white/70 p-4">
+                              <div>
+                                <label htmlFor={`start-${index}`} className="app-label">
+                                  開始時間
+                                </label>
+                                <Input
+                                  id={`start-${index}`}
+                                  type="time"
+                                  value={slot.start}
+                                  onChange={(e) => handleTimeSlotChange(index, "start", e.target.value)}
+                                  className="w-[11rem]"
+                                />
+                              </div>
+                              <div>
+                                <label htmlFor={`end-${index}`} className="app-label">
+                                  終了時間
+                                </label>
+                                <Input
+                                  id={`end-${index}`}
+                                  type="time"
+                                  value={slot.end}
+                                  onChange={(e) => handleTimeSlotChange(index, "end", e.target.value)}
+                                  className="w-[11rem]"
+                                />
+                              </div>
+                              <Button
+                                type="button"
+                                onClick={() => handleRemoveTimeSlot(index)}
+                                variant="outline"
+                                size="sm"
+                                className="mt-6 bg-white text-red-800 hover:bg-red-50 hover:text-red-900"
+                                disabled={timeSlots.length === 1}
+                              >
+                                削除
+                              </Button>
+                            </div>
+                          ))}
+                        </div>
+                        <div className="mt-4 flex flex-wrap gap-4">
+                          <Button
+                            type="button"
+                            onClick={handleAddTimeSlot}
+                            variant="outline"
+                            className="border-red-700 bg-red-50 text-red-800 hover:bg-red-100 hover:text-red-900"
+                          >
+                            時間枠を追加
+                          </Button>
+                          <Button type="button" onClick={handleSaveTimeSlots} disabled={loading}>
+                            {loading ? "保存中..." : "保存"}
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
-            </div>
-          </div>
+            </CardContent>
+          </Card>
         </div>
       </main>
-      <footer className="bg-blue-50 border-t border-blue-100 py-4">
+      <footer className="app-footer py-4">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <p className="text-center text-gray-500 text-sm">Copyright © {new Date().getFullYear()} TMC DX Committee</p>
+          <p className="text-center text-sm text-neutral-500">Copyright © {new Date().getFullYear()} TMC DX Committee</p>
         </div>
       </footer>
     </div>

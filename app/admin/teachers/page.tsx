@@ -8,6 +8,9 @@ import { getCurrentUser } from "@/lib/auth"
 import { getTeachers } from "@/lib/api"
 import type { Teacher } from "@/types/models"
 import Image from "next/image"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent } from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
 
 // 以下のインポートを追加
 import { addTeacherAction, deleteTeacherAction, initialState } from "./actions"
@@ -17,9 +20,9 @@ function SubmitButton() {
   const { pending } = useFormStatus()
 
   return (
-    <button type="submit" disabled={pending} className="ghibli-button">
+    <Button type="submit" disabled={pending}>
       {pending ? "追加中..." : "教員を追加"}
-    </button>
+    </Button>
   )
 }
 
@@ -126,109 +129,115 @@ export default function AdminTeachers() {
             </div>
           </div>
 
-          <div className="ghibli-card p-6 mb-8">
-            <h2 className="ghibli-title text-xl font-semibold mb-4">教員を追加</h2>
+          <Card className="ghibli-card mb-8">
+            <CardContent className="p-6">
+              <h2 className="app-panel-title mb-4">教員を追加</h2>
 
-            {(error || state.error) && (
-              <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded mb-4">
-                {error || state.error}
-              </div>
-            )}
+              {(error || state.error) && (
+                <div className="mb-4 rounded-md border border-red-200 bg-red-50 px-4 py-3 text-red-700">
+                  {error || state.error}
+                </div>
+              )}
 
-            {/* フォーム部分 */}
-            <form action={formAction} className="space-y-4">
-              <div>
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
-                  名前
-                </label>
-                <input
-                  id="name"
-                  name="name"
-                  type="text"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  className="ghibli-input w-full"
-                  placeholder="例: 山田 太郎"
-                />
-              </div>
+              <form action={formAction} className="space-y-4">
+                <div>
+                  <label htmlFor="name" className="app-label">
+                    名前
+                  </label>
+                  <Input
+                    id="name"
+                    name="name"
+                    type="text"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="例: 山田 太郎"
+                  />
+                </div>
 
-              <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-                  メールアドレス
-                </label>
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="ghibli-input w-full"
-                  placeholder="例: yamada@example.com"
-                />
-              </div>
+                <div>
+                  <label htmlFor="email" className="app-label">
+                    メールアドレス
+                  </label>
+                  <Input
+                    id="email"
+                    name="email"
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="例: yamada@example.com"
+                  />
+                </div>
 
-              <SubmitButton />
-            </form>
-          </div>
+                <SubmitButton />
+              </form>
+            </CardContent>
+          </Card>
 
-          <div className="ghibli-card p-6">
-            <h2 className="ghibli-title text-xl font-semibold mb-4">教員一覧</h2>
+          <Card className="ghibli-card">
+            <CardContent className="p-6">
+              <h2 className="app-panel-title mb-4">教員一覧</h2>
 
-            {loading ? (
-              <p className="text-center py-4">読み込み中...</p>
-            ) : teachers.length === 0 ? (
-              <p className="text-gray-500 text-center py-4">教員が登録されていません</p>
-            ) : (
-              <div className="overflow-x-auto">
-                <table className="min-w-full divide-y divide-gray-200">
-                  <thead className="bg-gray-50">
-                    <tr>
-                      <th
-                        scope="col"
-                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                      >
-                        名前
-                      </th>
-                      <th
-                        scope="col"
-                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                      >
-                        メールアドレス
-                      </th>
-                      <th
-                        scope="col"
-                        className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"
-                      >
-                        操作
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="bg-white divide-y divide-gray-200">
-                    {teachers.map((teacher) => (
-                      <tr key={teacher.id}>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="text-sm font-medium text-gray-900">{teacher.name}</div>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="text-sm text-gray-500">{teacher.email}</div>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                          <button onClick={() => handleDelete(teacher.id)} className="text-red-600 hover:text-red-900">
-                            削除
-                          </button>
-                        </td>
+              {loading ? (
+                <p className="py-4 text-center">読み込み中...</p>
+              ) : teachers.length === 0 ? (
+                <p className="py-4 text-center text-neutral-500">教員が登録されていません</p>
+              ) : (
+                <div className="overflow-x-auto rounded-md border border-black/10 bg-white/80">
+                  <table className="min-w-full divide-y divide-black/10">
+                    <thead className="bg-neutral-50">
+                      <tr>
+                        <th
+                          scope="col"
+                          className="px-6 py-3 text-left text-xs font-bold uppercase tracking-[0.08em] text-neutral-500"
+                        >
+                          名前
+                        </th>
+                        <th
+                          scope="col"
+                          className="px-6 py-3 text-left text-xs font-bold uppercase tracking-[0.08em] text-neutral-500"
+                        >
+                          メールアドレス
+                        </th>
+                        <th
+                          scope="col"
+                          className="px-6 py-3 text-right text-xs font-bold uppercase tracking-[0.08em] text-neutral-500"
+                        >
+                          操作
+                        </th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            )}
-          </div>
+                    </thead>
+                    <tbody className="divide-y divide-black/10 bg-white">
+                      {teachers.map((teacher) => (
+                        <tr key={teacher.id}>
+                          <td className="whitespace-nowrap px-6 py-4">
+                            <div className="text-sm font-semibold text-neutral-950">{teacher.name}</div>
+                          </td>
+                          <td className="whitespace-nowrap px-6 py-4">
+                            <div className="text-sm text-neutral-600">{teacher.email}</div>
+                          </td>
+                          <td className="whitespace-nowrap px-6 py-4 text-right text-sm font-medium">
+                            <Button
+                              onClick={() => handleDelete(teacher.id)}
+                              variant="ghost"
+                              size="sm"
+                              className="text-red-700 hover:bg-red-50 hover:text-red-900"
+                            >
+                              削除
+                            </Button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </CardContent>
+          </Card>
         </div>
       </main>
-      <footer className="bg-blue-50 border-t border-blue-100 py-4">
+      <footer className="app-footer py-4">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <p className="text-center text-gray-500 text-sm">Copyright © {new Date().getFullYear()} TMC DX Committee</p>
+          <p className="text-center text-sm text-neutral-500">Copyright © {new Date().getFullYear()} TMC DX Committee</p>
         </div>
       </footer>
     </div>

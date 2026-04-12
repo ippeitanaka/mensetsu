@@ -3,77 +3,227 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 248, 250, 252;
-  --background-end-rgb: 241, 245, 249;
+  --background: 0 0% 97%;
+  --foreground: 0 0% 8%;
+  --card: 0 0% 100%;
+  --card-foreground: 0 0% 8%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 0 0% 8%;
+  --primary: 0 71% 45%;
+  --primary-foreground: 0 0% 98%;
+  --secondary: 0 0% 92%;
+  --secondary-foreground: 0 0% 12%;
+  --muted: 0 0% 94%;
+  --muted-foreground: 0 0% 36%;
+  --accent: 0 80% 96%;
+  --accent-foreground: 0 65% 32%;
+  --destructive: 0 71% 45%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 0 0% 82%;
+  --input: 0 0% 84%;
+  --ring: 0 71% 45%;
+  --chart-1: 0 71% 45%;
+  --chart-2: 0 0% 20%;
+  --chart-3: 0 0% 46%;
+  --chart-4: 0 0% 68%;
+  --chart-5: 0 0% 84%;
+  --sidebar-background: 0 0% 98%;
+  --sidebar-foreground: 0 0% 10%;
+  --sidebar-primary: 0 71% 45%;
+  --sidebar-primary-foreground: 0 0% 98%;
+  --sidebar-accent: 0 80% 96%;
+  --sidebar-accent-foreground: 0 65% 32%;
+  --sidebar-border: 0 0% 84%;
+  --sidebar-ring: 0 71% 45%;
+  --radius: 0.4rem;
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(to bottom, transparent, rgb(var(--background-end-rgb))) rgb(var(--background-start-rgb));
+  color: hsl(var(--foreground));
+  background:
+    radial-gradient(circle at top, rgba(127, 29, 29, 0.08), transparent 28%),
+    linear-gradient(180deg, #fcfcfc 0%, #f3f4f6 100%);
   min-height: 100vh;
+  font-feature-settings: "palt";
 }
 
-/* 背景スタイルを無地に変更 */
+* {
+  border-color: hsl(var(--border));
+}
+
+::selection {
+  background: rgba(185, 28, 28, 0.16);
+  color: hsl(var(--foreground));
+}
+
+.dark {
+  --background: 0 0% 97%;
+  --foreground: 0 0% 8%;
+  --card: 0 0% 100%;
+  --card-foreground: 0 0% 8%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 0 0% 8%;
+  --primary: 0 71% 45%;
+  --primary-foreground: 0 0% 98%;
+  --secondary: 0 0% 92%;
+  --secondary-foreground: 0 0% 12%;
+  --muted: 0 0% 94%;
+  --muted-foreground: 0 0% 36%;
+  --accent: 0 80% 96%;
+  --accent-foreground: 0 65% 32%;
+  --destructive: 0 71% 45%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 0 0% 82%;
+  --input: 0 0% 84%;
+  --ring: 0 71% 45%;
+}
+
 .ghibli-bg {
-  background-color: #f8fafc;
+  background:
+    radial-gradient(circle at top, rgba(127, 29, 29, 0.08), transparent 28%),
+    linear-gradient(180deg, #fcfcfc 0%, #f3f4f6 100%);
   position: relative;
 }
 
 .ghibli-card {
-  background-color: rgba(255, 255, 255, 0.9);
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  border: 1px solid #e2e8f0;
+  background-color: rgba(255, 255, 255, 0.94);
+  border-radius: calc(var(--radius) + 2px);
+  box-shadow: 0 20px 40px rgba(17, 17, 17, 0.06);
+  border: 1px solid rgba(23, 23, 23, 0.12);
 }
 
 .ghibli-title {
-  font-family: "Hiragino Maru Gothic Pro", "Meiryo", sans-serif;
-  color: #c53030;
+  color: #111111;
+  font-weight: 800;
+  letter-spacing: -0.035em;
 }
 
 .ghibli-button {
-  background-color: #e53e3e;
-  color: white;
-  border-radius: 9999px;
-  padding: 0.5rem 1.5rem;
-  font-weight: 600;
-  transition: all 0.2s;
-  box-shadow: 0 2px 4px rgba(229, 62, 62, 0.5);
+  background-color: #b91c1c;
+  color: #fafafa;
+  border-radius: var(--radius);
+  padding: 0.625rem 1.1rem;
+  font-weight: 700;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+  border: 1px solid #7f1d1d;
+  box-shadow: none;
 }
 
 .ghibli-button:hover {
-  background-color: #c53030;
+  background-color: #991b1b;
   transform: translateY(-1px);
-  box-shadow: 0 4px 6px rgba(229, 62, 62, 0.5);
+  box-shadow: none;
 }
 
 .ghibli-button:disabled {
-  background-color: #a0aec0;
+  background-color: #d4d4d4;
+  border-color: #d4d4d4;
+  color: #737373;
   cursor: not-allowed;
 }
 
 .ghibli-input {
-  border: 2px solid #e2e8f0;
-  border-radius: 8px;
-  padding: 0.5rem 1rem;
-  transition: all 0.2s;
+  border: 1px solid rgba(23, 23, 23, 0.16);
+  border-radius: var(--radius);
+  min-height: 2.75rem;
+  padding: 0.625rem 0.9rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+  background-color: rgba(255, 255, 255, 0.98);
+  color: #111111;
 }
 
 .ghibli-input:focus {
-  border-color: #4299e1;
-  box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.3);
+  border-color: #b91c1c;
+  box-shadow: 0 0 0 3px rgba(185, 28, 28, 0.12);
   outline: none;
+}
+
+.ghibli-input::placeholder {
+  color: #737373;
+}
+
+.app-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-footer {
+  border-top: 1px solid rgba(23, 23, 23, 0.08);
+  background: rgba(255, 255, 255, 0.76);
+  backdrop-filter: blur(14px);
+}
+
+.app-panel-title {
+  color: #111111;
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+.app-label {
+  display: block;
+  margin-bottom: 0.375rem;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #262626;
+}
+
+.app-status-chip {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 9999px;
+  border: 1px solid rgba(23, 23, 23, 0.08);
+  padding: 0.3rem 0.6rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.app-status-chip--available {
+  background: #fafafa;
+  color: #171717;
+}
+
+.app-status-chip--full {
+  background: #fef2f2;
+  color: #991b1b;
+  border-color: rgba(185, 28, 28, 0.18);
+}
+
+.app-status-swatch {
+  height: 0.875rem;
+  width: 0.875rem;
+  border-radius: 2px;
+  border: 1px solid rgba(23, 23, 23, 0.12);
+}
+
+.app-status-swatch--available {
+  background: #e5e7eb;
+}
+
+.app-status-swatch--full {
+  background: #fecaca;
+  border-color: rgba(185, 28, 28, 0.18);
+}
+
+.app-slot-card {
+  border-radius: calc(var(--radius) + 1px);
+  border: 1px solid rgba(23, 23, 23, 0.1);
+  background: rgba(255, 255, 255, 0.96);
+}
+
+.app-slot-card--full {
+  border-color: rgba(185, 28, 28, 0.18);
+  background: #fff5f5;
 }
 
 .ghibli-calendar .react-calendar {
   width: 100%;
   max-width: 100%;
-  background: white;
-  border: 1px solid #e2e8f0;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  font-family: "Hiragino Maru Gothic Pro", "Meiryo", sans-serif;
+  background: rgba(255, 255, 255, 0.98);
+  border: 1px solid rgba(23, 23, 23, 0.1);
+  border-radius: calc(var(--radius) + 2px);
+  box-shadow: 0 20px 40px rgba(17, 17, 17, 0.05);
   line-height: 1.125em;
 }
 
@@ -83,22 +233,22 @@ body {
   text-align: center;
   line-height: 16px;
   font-size: 0.9em;
-  border-radius: 8px;
+  border-radius: 4px;
   transition: all 0.2s;
 }
 
 .ghibli-calendar .react-calendar__tile:hover {
-  background-color: #ebf8ff;
+  background-color: #f5f5f5;
 }
 
 .ghibli-calendar .react-calendar__tile--active {
-  background: #4299e1;
-  color: white;
+  background: #b91c1c;
+  color: #fafafa;
 }
 
 .ghibli-calendar .react-calendar__tile--hasActive {
-  background: #4299e1;
-  color: white;
+  background: #b91c1c;
+  color: #fafafa;
 }
 
 .ghibli-calendar .react-calendar__navigation {
@@ -110,12 +260,12 @@ body {
 .ghibli-calendar .react-calendar__navigation button {
   min-width: 44px;
   background: none;
-  border-radius: 8px;
+  border-radius: 4px;
   transition: all 0.2s;
 }
 
 .ghibli-calendar .react-calendar__navigation button:hover {
-  background-color: #ebf8ff;
+  background-color: #f5f5f5;
 }
 
 .ghibli-calendar .react-calendar__month-view__weekdays {
@@ -123,15 +273,15 @@ body {
   text-transform: uppercase;
   font-weight: bold;
   font-size: 0.8em;
-  color: #4a5568;
+  color: #525252;
 }
 
 .ghibli-calendar .react-calendar__month-view__days__day--weekend {
-  color: #e53e3e;
+  color: #b91c1c;
 }
 
 .ghibli-calendar .react-calendar__month-view__days__day--neighboringMonth {
-  color: #a0aec0;
+  color: #a3a3a3;
 }
 
 .ghibli-calendar .react-calendar__year-view .react-calendar__tile,
@@ -141,38 +291,38 @@ body {
 }
 
 .ghibli-calendar .react-calendar__tile--now {
-  background: #ebf8ff;
-  border-radius: 8px;
+  background: #f5f5f5;
+  border-radius: 4px;
 }
 
 .ghibli-calendar .react-calendar__tile--now:hover {
-  background: #bee3f8;
+  background: #e5e7eb;
 }
 
 .ghibli-calendar .react-calendar__tile--hasActive:hover {
-  background: #3182ce;
+  background: #991b1b;
 }
 
 .ghibli-calendar .react-calendar__tile--active:hover {
-  background: #3182ce;
+  background: #991b1b;
 }
 
 .available-day {
-  background-color: #c6f6d5 !important;
+  background-color: #e5e7eb !important;
   position: relative;
 }
 
 .available-day::after {
-  content: "○";
+  content: "・";
   position: absolute;
   bottom: 2px;
   right: 2px;
   font-size: 10px;
-  color: #38a169;
+  color: #171717;
 }
 
 .full-day {
-  background-color: #fed7d7 !important;
+  background-color: #fecaca !important;
   position: relative;
 }
 
@@ -182,7 +332,7 @@ body {
   bottom: 2px;
   right: 2px;
   font-size: 10px;
-  color: #e53e3e;
+  color: #b91c1c;
 }
 
 /* アニメーション用のスタイル */

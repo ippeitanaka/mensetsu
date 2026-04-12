@@ -11,6 +11,7 @@ import type { Teacher, AvailableSlot } from "@/types/models"
 import { format } from "date-fns"
 import { ja } from "date-fns/locale"
 import Image from "next/image"
+import { Card, CardContent } from "@/components/ui/card"
 
 type ValuePiece = Date | null
 type Value = ValuePiece | [ValuePiece, ValuePiece]
@@ -93,7 +94,7 @@ export default function Schedule() {
   }
 
   return (
-    <div className="ghibli-bg min-h-screen flex flex-col">
+    <div className="ghibli-bg app-shell">
       <Navigation />
       <main className="flex-grow p-4 sm:p-8">
         <div className="max-w-6xl mx-auto">
@@ -110,102 +111,97 @@ export default function Schedule() {
             </div>
           </div>
 
-          <div className="ghibli-card p-6 mb-8">
-            <div className="mb-6">
-              <label htmlFor="teacher" className="block text-sm font-medium text-gray-700 mb-1">
-                教員を選択
-              </label>
-              <select
-                id="teacher"
-                value={selectedTeacher}
-                onChange={handleTeacherChange}
-                className="ghibli-input w-full sm:w-auto"
-                disabled={loading || teachers.length === 0}
-              >
-                {/* 全員オプションを追加 */}
-                <option value="all">全員</option>
-                {teachers.length === 0 ? (
-                  <option value="">教員が登録されていません</option>
-                ) : (
-                  teachers.map((teacher) => (
-                    <option key={teacher.id} value={teacher.id}>
-                      {teacher.name}
-                    </option>
-                  ))
-                )}
-              </select>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div>
-                <h2 className="ghibli-title text-xl font-semibold mb-4">年間カレンダー</h2>
-                <div className="ghibli-calendar">
-                  <Calendar onChange={setDate} value={date} locale="ja-JP" tileClassName={tileClassName} />
-                </div>
-                <div className="mt-4 flex flex-col sm:flex-row gap-4">
-                  <div className="flex items-center">
-                    <div className="w-4 h-4 bg-green-200 mr-2"></div>
-                    <span className="text-sm">予約可能</span>
-                  </div>
-                  <div className="flex items-center">
-                    <div className="w-4 h-4 bg-red-200 mr-2"></div>
-                    <span className="text-sm">満員</span>
-                  </div>
-                </div>
+          <Card className="ghibli-card mb-8">
+            <CardContent className="p-6">
+              <div className="mb-6">
+                <label htmlFor="teacher" className="app-label">
+                  教員を選択
+                </label>
+                <select
+                  id="teacher"
+                  value={selectedTeacher}
+                  onChange={handleTeacherChange}
+                  className="ghibli-input w-full sm:w-auto"
+                  disabled={loading || teachers.length === 0}
+                >
+                  <option value="all">全員</option>
+                  {teachers.length === 0 ? (
+                    <option value="">教員が登録されていません</option>
+                  ) : (
+                    teachers.map((teacher) => (
+                      <option key={teacher.id} value={teacher.id}>
+                        {teacher.name}
+                      </option>
+                    ))
+                  )}
+                </select>
               </div>
 
-              <div>
-                <h2 className="ghibli-title text-xl font-semibold mb-4">
-                  {date instanceof Date
-                    ? `${format(date, "yyyy年M月d日", { locale: ja })}の予約状況`
-                    : "日付を選択してください"}
-                </h2>
+              <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+                <div>
+                  <h2 className="app-panel-title mb-4">年間カレンダー</h2>
+                  <div className="ghibli-calendar">
+                    <Calendar onChange={setDate} value={date} locale="ja-JP" tileClassName={tileClassName} />
+                  </div>
+                  <div className="mt-4 flex flex-col gap-4 sm:flex-row">
+                    <div className="flex items-center gap-2 text-sm text-neutral-700">
+                      <div className="app-status-swatch app-status-swatch--available"></div>
+                      <span>予約可能</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-sm text-neutral-700">
+                      <div className="app-status-swatch app-status-swatch--full"></div>
+                      <span>満員</span>
+                    </div>
+                  </div>
+                </div>
 
-                {selectedDateSlots.length > 0 ? (
-                  <div className="space-y-4">
-                    {selectedDateSlots.map((slot) => (
-                      <div
-                        key={slot.id}
-                        className={`p-4 rounded-lg border ${
-                          slot.is_full ? "bg-red-50 border-red-200" : "bg-green-50 border-green-200"
-                        }`}
-                      >
-                        <div className="flex justify-between items-center">
-                          <div>
-                            <p className="font-medium">
-                              {slot.start_time.substring(0, 5)} - {slot.end_time.substring(0, 5)}
-                            </p>
-                            <p className="text-sm text-gray-600">{(slot.teacher as any)?.name || "教員名不明"}</p>
-                          </div>
-                          <div>
-                            {slot.is_full ? (
-                              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
-                                満員
-                              </span>
-                            ) : (
-                              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                予約可能
-                              </span>
-                            )}
+                <div>
+                  <h2 className="app-panel-title mb-4">
+                    {date instanceof Date
+                      ? `${format(date, "yyyy年M月d日", { locale: ja })}の予約状況`
+                      : "日付を選択してください"}
+                  </h2>
+
+                  {selectedDateSlots.length > 0 ? (
+                    <div className="space-y-4">
+                      {selectedDateSlots.map((slot) => (
+                        <div
+                          key={slot.id}
+                          className={`app-slot-card p-4 ${slot.is_full ? "app-slot-card--full" : ""}`}
+                        >
+                          <div className="flex items-center justify-between gap-3">
+                            <div>
+                              <p className="font-semibold text-neutral-950">
+                                {slot.start_time.substring(0, 5)} - {slot.end_time.substring(0, 5)}
+                              </p>
+                              <p className="text-sm text-neutral-600">{(slot.teacher as any)?.name || "教員名不明"}</p>
+                            </div>
+                            <div>
+                              {slot.is_full ? (
+                                <span className="app-status-chip app-status-chip--full">満員</span>
+                              ) : (
+                                <span className="app-status-chip app-status-chip--available">予約可能</span>
+                              )}
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    ))}
-                    <p className="text-sm text-gray-600 mt-4">※ 予約を希望する場合は、教員に直接連絡してください。</p>
-                  </div>
-                ) : date instanceof Date ? (
-                  <div className="text-center py-8">
-                    <p className="text-gray-500">この日の予約枠はありません</p>
-                  </div>
-                ) : null}
+                      ))}
+                      <p className="mt-4 text-sm text-neutral-600">※ 予約を希望する場合は、教員に直接連絡してください。</p>
+                    </div>
+                  ) : date instanceof Date ? (
+                    <div className="py-8 text-center">
+                      <p className="text-neutral-500">この日の予約枠はありません</p>
+                    </div>
+                  ) : null}
+                </div>
               </div>
-            </div>
-          </div>
+            </CardContent>
+          </Card>
         </div>
       </main>
-      <footer className="bg-blue-50 border-t border-blue-100 py-4">
+      <footer className="app-footer py-4">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <p className="text-center text-gray-500 text-sm">Copyright © {new Date().getFullYear()} TMC DX Committee</p>
+          <p className="text-center text-sm text-neutral-500">Copyright © {new Date().getFullYear()} TMC DX Committee</p>
         </div>
       </footer>
     </div>
