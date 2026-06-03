@@ -13,7 +13,21 @@ const notoSansJp = Noto_Sans_JP({
 export const metadata: Metadata = {
   title: "就職面接練習スケジューラー",
   description: "学生が面接練習を教員に依頼するためのスケジュール管理アプリ",
-    generator: 'v0.dev'
+  generator: "v0.dev",
+  manifest: "/manifest.webmanifest",
+  icons: {
+    icon: [
+      { url: "/icon.png", type: "image/png" },
+      { url: "/favicon.ico", sizes: "any" },
+    ],
+    apple: [{ url: "/apple-touch-icon.png", type: "image/png" }],
+    shortcut: ["/favicon.ico"],
+  },
+  appleWebApp: {
+    capable: true,
+    title: "就職面接練習",
+    statusBarStyle: "default",
+  },
 }
 
 export default function RootLayout({
